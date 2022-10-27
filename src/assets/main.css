@@ -5,6 +5,10 @@ html, body {
   height: 100%;
 }
 
+.main {
+  flex: 1;
+}
+
 #app {
   margin: 0;
   padding: 40px 64px;

@@ -8,7 +8,6 @@ import { RouterView } from 'vue-router'
   </header>
 
   <div class="main">
-    <nav></nav>
     <RouterView />
   </div>
 
@@ -16,9 +15,3 @@ import { RouterView } from 'vue-router'
     <p>Footer</p>
   </footer>
 </template>
-
-<style scoped>
-.main {
-  flex: 1;
-}
-</style>
