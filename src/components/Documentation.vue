@@ -1,29 +1,29 @@
 <script setup>
 import Response from "./Response.vue";
 import Request from "./Request.vue";
+import { computed } from "@vue/reactivity";
 
-defineProps({
+const { api, fn } = defineProps({
   api: {
     type: Object,
     required: true,
+  },
+  fn: {
+    type: String,
+    required: true
   }
 });
 
+const func = api.functions[fn]
 </script>
 
 <template>
-  <h1 class="green">{{ api.version }}</h1>
+  <h2>{{ fn }}</h2>
+  <span>{{ func.description }}</span>
 
-  <ul class="unlist">
-    <li v-for="(fn, fnName) in api.functions">
-      <h2>{{ fnName }}</h2>
-      <span>{{ fn.description }}</span>
+  <h3>Request</h3>
+  <Request :request=func.request />
 
-      <h3>Request</h3>
-      <Request :request=fn.request />
-
-      <h3>Response</h3>
-      <Response v-if="fn.response" :response=fn.response />
-    </li>
-  </ul>
+  <h3>Response</h3>
+  <Response v-if="func.response" :response=func.response />
 </template>

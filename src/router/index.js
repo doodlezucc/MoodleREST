@@ -1,3 +1,5 @@
+import version389 from '../api/moodle-3.8.9.json'
+
 export default [
   {
     path: '/',
@@ -8,9 +10,8 @@ export default [
     name: 'api',
     component: () => import('../views/ApiView.vue'),
     props: (route) => ({
-      api: {
-        version: "3.420 haha :D"
-      }
+      api: version389,
+      root: '3-8-9'
     })
   },
   {

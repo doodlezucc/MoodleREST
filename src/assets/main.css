@@ -6,12 +6,13 @@ html, body {
 }
 
 .main {
+  display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
 #app {
   margin: 0;
-  padding: 40px 64px;
   font-weight: normal;
   display: flex;
   flex-direction: column;
@@ -23,6 +24,10 @@ a,
   text-decoration: none;
   color: rgb(76, 73, 255);
   transition: 0.4s;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 code {
@@ -65,4 +70,27 @@ th, td {
 
 strong, b {
   font-weight: bold;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+nav > ul {
+  overflow: auto;
+  flex: 1;
+  padding: 0 12px;
+}
+nav ul {
+  padding-inline-start: 12px;
+  list-style-type: none;
+}
+nav .path {
+  font-style: italic;
+}
+
+main {
+  overflow-y: auto;
+  flex: 1;
+  padding: 40px 64px;
 }
