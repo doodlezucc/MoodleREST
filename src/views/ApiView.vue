@@ -28,7 +28,7 @@ onBeforeRouteUpdate((to, from) => {
 <template>
   <ApiNav :api=api />
   <main>
-    <Documentation v-if="fn" :api=api :fn=fn :key=fn />
+    <Documentation v-if="fn" :api=api :name=fn :key=fn />
     <Overview v-else :api=api />
   </main>
 </template>

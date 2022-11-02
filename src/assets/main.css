@@ -99,3 +99,15 @@ main {
   font-weight: bold;
   text-decoration: underline;
 }
+
+ul.big-items {
+  padding-inline-start: 0;
+}
+ul.big-items > li {
+  list-style-type: none;
+}
+ul.big-items .item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}

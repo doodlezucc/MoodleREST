@@ -1,37 +1,36 @@
 <script setup>
-import Response from "./Response.vue";
-import Request from "./Request.vue";
-import { computed } from "@vue/reactivity";
+import CompDoc from "./DocumentedComponent.vue";
+import FuncDoc from "./DocumentedFunction.vue";
 
-const { api, fn } = defineProps({
+const { api, name } = defineProps({
   api: {
     type: Object,
     required: true,
   },
-  fn: {
+  name: {
     type: String,
     required: true
   }
 });
 
-let func
+let isComponent = false
+let body
 for (const compname in api) {
   const comp = api[compname]
-  if (fn in comp) {
-    func = comp[fn]
+  if (compname === name) {
+    body = comp
+    isComponent = true
+    break
+  }
+
+  if (name in comp) {
+    body = comp[name]
     break
   }
 }
-// const func = api.functions[fn]
 </script>
 
 <template>
-  <h2>{{ fn }}</h2>
-  <span>{{ func.description }}</span>
-
-  <h3>Request</h3>
-  <Request :request=func.request />
-
-  <h3>Response</h3>
-  <Response v-if="func.response" :response=func.response />
+  <CompDoc v-if="isComponent" :name=name :functions=body />
+  <FuncDoc v-else :name=name :body=body />
 </template>
