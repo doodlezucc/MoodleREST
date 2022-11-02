@@ -94,3 +94,8 @@ main {
   flex: 1;
   padding: 40px 64px;
 }
+
+.required {
+  font-weight: bold;
+  text-decoration: underline;
+}

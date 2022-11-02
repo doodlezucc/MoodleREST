@@ -15,7 +15,8 @@ defineProps({
         <Comment :content=field.description />
         <ul>
             <li v-for="(prop, key) in field.properties">
-                {{ key }} -
+                <span :class="{ required: prop.required }">{{ key }}</span>
+                -
                 <Field :field=prop />
             </li>
         </ul>}

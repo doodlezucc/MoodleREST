@@ -20,15 +20,15 @@ defineProps({
         <tr v-for="(param, paramName) in request">
             <td>
                 <code class="inline">
-                    <u v-if="param.required">
-                        <b>{{ paramName }}</b>
-                    </u>
-                    <span v-else>{{ paramName }}</span>
+                    <span :class="{ required: param.required }">{{ paramName }}</span>
                 </code>
             </td>
-            <td>{{ param.description }}</td>
-            <td>
+            <td v-if="param.type !== 'object'">{{ param.description }}</td>
+            <td v-if="param.type !== 'object'">
                 <code class="inline">{{ param.type }}</code>
+            </td>
+            <td v-else colspan="2">
+                <code><Field :field=param /></code>
             </td>
 
             <td>
