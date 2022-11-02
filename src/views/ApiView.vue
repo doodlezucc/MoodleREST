@@ -9,10 +9,6 @@ defineProps({
   api: {
     type: Object,
     required: true
-  },
-  root: {
-    type: String,
-    required: true
   }
 });
 
@@ -21,7 +17,6 @@ const route = useRoute()
 const fn = ref()
 function setDocFn(val) {
   fn.value = (val ?? route.hash).substring(1)
-  console.log("updated fn")
 }
 
 setDocFn()
@@ -31,7 +26,7 @@ onBeforeRouteUpdate((to, from) => {
 </script>
 
 <template>
-  <ApiNav :api=api :root=root />
+  <ApiNav :api=api />
   <main>
     <Documentation v-if="fn" :api=api :fn=fn :key=fn />
     <Overview v-else :api=api />

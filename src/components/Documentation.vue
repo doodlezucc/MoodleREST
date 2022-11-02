@@ -14,7 +14,15 @@ const { api, fn } = defineProps({
   }
 });
 
-const func = api.functions[fn]
+let func
+for (const compname in api) {
+  const comp = api[compname]
+  if (fn in comp) {
+    func = comp[fn]
+    break
+  }
+}
+// const func = api.functions[fn]
 </script>
 
 <template>
