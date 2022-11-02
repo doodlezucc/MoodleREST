@@ -4,6 +4,9 @@ from pathlib import Path
 import re
 from typing import Any, Dict, List, cast
 
+# Matches single and multiline comments
+p_cmnt = r"//.*?$|/\*.*?\*/"
+
 # 1: [new]...
 # 2: <FUNCTION_CALL>(
 # 3: <boolean>
@@ -14,7 +17,7 @@ from typing import Any, Dict, List, cast
 # 8: short syntax array "[" 
 # 9: comment
 r_expression = re.compile(
-    r"(new )?([$\w]+?)\s*\(|(?:(true|false)|(\d+\.\d+)|(\d+)|(?:'(.*?)(?<!\\)')|([\w$\\]+))[,\s\.:;\])]|(\[)|(//.*?$|/\*.*?\*/)",
+    fr"(new )?([$\w]+?)\s*\(|(?:(true|false)|(\d+\.\d+)|(\d+)|(?:'(.*?)(?<!\\)')|([\w$\\]+))[,\s\.:;\])]|(\[)|({p_cmnt})",
     flags=re.M|re.S
 )
 r_array_sep = re.compile(r"=>|,", flags=re.M|re.S)
@@ -22,13 +25,13 @@ r_assign_functions = re.compile(r"\$functions\s*=", flags=re.M|re.S)
 
 r_namespace = re.compile(r"^namespace\s*(\S+);", flags=re.M|re.S)
 r_class = re.compile(r"^\s*class\s*(\S+)(?:\s+extends\s+(\S+))?\s*{", flags=re.M|re.S)
-r_multi_comment = re.compile(r"/\*\*.*?\*/", flags=re.M|re.S)
 r_doc = re.compile(r"/\*.*?\*/", flags=re.M|re.S)
 r_doc_tag = re.compile(r"@(since|deprecated|todo)\s+(.*?)$", flags=re.M|re.S)
+r_semver = re.compile(r"\d+(?:\.\d+)+")
 
 def outer_scope(code: str, open = "{", close = "}"):
     # Matches comments first, brackets second
-    matches = re.finditer(fr"//.*?$|/\*.*?\*/|(\{open}|\{close})", code, flags=re.M|re.S)
+    matches = re.finditer(fr"{p_cmnt}|(\{open}|\{close})", code, flags=re.M|re.S)
     depth = 0
     start = None
 
@@ -337,9 +340,9 @@ def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, MethodDocs]):
                     fn = component[funcname]
 
                     if docs.since:
-                        fn["since"] = docs.since
+                        fn["since"] = r_semver.search(docs.since)[0]
                     if docs.deprecated:
-                        fn["deprecated"] = docs.deprecated
+                        fn["deprecated"] = r_semver.search(docs.deprecated)[0]
                     if docs.todo:
                         fn["todo"] = docs.todo
 
@@ -354,7 +357,7 @@ def main():
 
     root = Path("../../../../Moodle-400/server/moodle")
     wsapi_file = "wsapi.json"
-    output = "wsapi-extended.json"
+    output = "../src/api/moodle-4.0.0.json"
 
     print("Extracting tags...")
     wsfns = extract_all(root)
