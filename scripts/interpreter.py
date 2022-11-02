@@ -1,3 +1,5 @@
+import json
+import os
 from pathlib import Path
 import re
 from typing import Any, Dict, List, cast
@@ -12,7 +14,7 @@ from typing import Any, Dict, List, cast
 # 8: short syntax array "[" 
 # 9: comment
 r_expression = re.compile(
-    r"(new )?([$\w]+?)\(|(?:(true|false)|(\d+\.\d+)|(\d+)|(?:'(.*?)(?<!\\)')|([\w$]+))[,\s\.:;\])]|(\[)|(//.*?$|/\*.*?\*/)",
+    r"(new )?([$\w]+?)\s*\(|(?:(true|false)|(\d+\.\d+)|(\d+)|(?:'(.*?)(?<!\\)')|([\w$\\]+))[,\s\.:;\])]|(\[)|(//.*?$|/\*.*?\*/)",
     flags=re.M|re.S
 )
 r_array_sep = re.compile(r"=>|,", flags=re.M|re.S)
@@ -22,31 +24,24 @@ r_namespace = re.compile(r"^namespace\s*(\S+);", flags=re.M|re.S)
 r_class = re.compile(r"^\s*class\s*(\S+)(?:\s+extends\s+(\S+))?\s*{", flags=re.M|re.S)
 r_multi_comment = re.compile(r"/\*\*.*?\*/", flags=re.M|re.S)
 r_doc = re.compile(r"/\*.*?\*/", flags=re.M|re.S)
-r_doc_tag = re.compile(r"@(since|deprecated)\s+(.*?)$", flags=re.M|re.S)
+r_doc_tag = re.compile(r"@(since|deprecated|todo)\s+(.*?)$", flags=re.M|re.S)
 
 def outer_scope(code: str, open = "{", close = "}"):
-    start = code.index(open)
-    pos = start + 1
-    depth = 1
-    cmnt = 0
+    # Matches comments first, brackets second
+    matches = re.finditer(fr"//.*?$|/\*.*?\*/|(\{open}|\{close})", code, flags=re.M|re.S)
+    depth = 0
+    start = None
 
-    while depth > 0:
-        char = code[pos]
-
-        if cmnt >= 2:
-            if char == "\n":
-                cmnt = 0
-        else:
-            if char == open:
+    for match in matches:
+        if match[1]:
+            if match[1] == open:
                 depth += 1
-            elif char == close:
+                if start is None:
+                    start = match.start()
+            else:
                 depth -= 1
-            elif char == "/":
-                cmnt += 1
-        
-        pos += 1
-    
-    return code[start:pos]
+                if depth <= 0:
+                    return code[start:match.end()]
 
 class Expression():
     def __init__(self):
@@ -103,8 +98,13 @@ class Property(Reference):
         if isinstance(self.object, Lookup):
             if not ctx:
                 ctx = prop_lookup
-            value = ctx[self.object.name]
-            return self.prop.dereference(value)
+            try:
+                value = ctx[self.object.name]
+                return self.prop.dereference(value)
+            except KeyError:
+                if isinstance(self.prop, Lookup) and self.prop.name == "class":
+                    return Primitive(self.object.name)
+
         return self.prop
     
     def __repr__(self) -> str:
@@ -145,15 +145,12 @@ class PhpArray(Call):
     def resolve(self):
         return self.py
 
-prop_lookup = {
-    "tool_xmldb_external": {
-        "class": "tool_xmldb_external"
-    }
-}
+prop_lookup = {}
 
 def read_scope(s: str, pos: List[int], open="(", close=")"):
-    scope = outer_scope(s[pos[0]:], open, close)
-    pos[0] += len(scope)
+    start = s.index(open, pos[0])
+    scope = outer_scope(s[start:], open, close)
+    pos[0] = start + len(scope)
     return scope
 
 def read_expression(s: str, pos: List[int]):
@@ -186,10 +183,12 @@ def read_expression(s: str, pos: List[int]):
             # Match is comment, continue looking
             return read_expression(s, pos)
         
-        last = s[pos[0]]
-        if last in ".:":
-            return Property(result, read_expression(s, pos))
-        return result
+        try:
+            last = s[pos[0]]
+            if last in ".:":
+                result = Property(result, read_expression(s, pos))
+        finally:
+            return result
     
     # raise ValueError(f'Unable to find expression in "{s[pos[0]:]}"')
 
@@ -243,7 +242,7 @@ def find_docs(classdef: str, method: str):
         return MethodDocs()
 
 def extract_classes(file: Path, lookup: dict):
-    with file.open("r", -1, "utf-8") as f:
+    with file.open("r", -1, "utf-8", errors="replace") as f:
         content = f.read()
 
         space = r_namespace.search(content)
@@ -264,16 +263,28 @@ def make_class_lookup(root: Path):
     return lookup
 
 def extract_function_info(spec: PhpArray, class_defs: Dict[str, str], cwd: Path):
+    # Lazy class loading: not worth it, really
+    # try:
+    #     p = cast(str, spec.entries["classpath"].resolve())
+    #     path = cwd.joinpath(p)
+    #     print(f"Adding classes from explicit classpath {path}")
+    #     extract_classes(path, class_defs)
+    # except FileNotFoundError:
+    #     print(f"WARNING: Explicit classpath {path} can't be resolved!")
+    # except (AttributeError, FileNotFoundError, KeyError):
+    #     path = None
+
+    # Some $functions don't have methodnames and default to "execute()"
     try:
-        p = cast(str, spec.entries["classpath"].resolve())
-        path = cwd.joinpath(p)
-        print(f"Adding classes from specified classpath {path}")
-        extract_classes(path, class_defs)
-    except (AttributeError, KeyError):
-        path = None
+        method = cast(str, spec.entries["methodname"].resolve())
+    except KeyError:
+        method = "execute"
 
     classid = cast(str, spec.entries["classname"].resolve())
-    method = cast(str, spec.entries["methodname"].resolve())
+    if classid.startswith("\\"):
+        classid = classid[1:]
+    
+    classid = classid.replace("\\\\", "\\")
     definition = class_defs[classid]
 
     # print(f"Looking for {method} in {classid}")
@@ -284,7 +295,7 @@ def extract_function_info(spec: PhpArray, class_defs: Dict[str, str], cwd: Path)
 def find_services_php(dirpath: Path):
     return dirpath.rglob("db/services.php")
 
-def extract_from_services(services: Path, cwd: Path, fns: dict = {}):
+def extract_from_services(services: Path, cwd: Path, cls_lookup: dict, fns: dict = {}):
     content = services.read_text()
 
     pos = [r_assign_functions.search(content).end()]
@@ -293,28 +304,64 @@ def extract_from_services(services: Path, cwd: Path, fns: dict = {}):
     if not len(arr.entries):
         return fns
 
-    root = services.parent.parent
-    cls_lookup = make_class_lookup(root)
-
     for fn in arr.entries:
         fns[fn] = extract_function_info(arr.entries[fn], cls_lookup, cwd)
     return fns
 
-def extract_all(root: str):
-    rootpath = Path(root)
-    all_services = find_services_php(rootpath)
+def extract_all(root: Path, limit = -1):
+    print("Reading ALL class definitions")
+    cls_lookup = make_class_lookup(root)
+    print("yup")
+    all_services = find_services_php(root)
 
     wsfns = dict()
-    limit = 10
     for php in all_services:
         print(php)
-        extract_from_services(php, rootpath, wsfns)
+        extract_from_services(php, root, cls_lookup, wsfns)
         
         limit -= 1
-        if limit <= 0:
+        if limit == 0:
             break
     
-    print(f"Documentation tags extracted successfully!")
-    print(wsfns)
+    return wsfns
 
-extract_all("../../../Moodle-400/server/moodle")
+def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, MethodDocs]):
+    with open(wsapi_file, "r") as f:
+        wsapi = json.load(f)
+        
+        for compname in wsapi:
+            component = wsapi[compname]
+            for funcname in component:
+                try:
+                    docs = tags[funcname]
+                    fn = component[funcname]
+
+                    if docs.since:
+                        fn["since"] = docs.since
+                    if docs.deprecated:
+                        fn["deprecated"] = docs.deprecated
+                    if docs.todo:
+                        fn["todo"] = docs.todo
+
+                except KeyError:
+                    pass
+        
+        with open(output, "w") as f:
+            json.dump(wsapi, f, separators=(',', ':'))
+
+def main():
+    os.chdir(os.path.dirname(__file__))
+
+    root = Path("../../../../Moodle-400/server/moodle")
+    wsapi_file = "wsapi.json"
+    output = "wsapi-extended.json"
+
+    print("Extracting tags...")
+    wsfns = extract_all(root)
+
+    print(f"Documentation tags extracted successfully!\n")
+    print("Applying tags to generated API Reference...")
+    extend_wsapi(wsapi_file, output, wsfns)
+    print("Done!")
+
+main()
