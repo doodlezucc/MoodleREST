@@ -4,6 +4,27 @@
  * This file is meant to be copied to your Moodle directory (/server/moodle/doc_json.php).
  * Once your Moodle process is running, navigate to http://localhost:80/doc_json.php to
  * generate all webservice endpoints and write them to "wsapi.json".
+ * 
+ * 
+ * >> EXTRA STEP: NULLABLE PARAMETERS <<
+ * 
+ * To better detect nullable parameters in service functions, the constructor of
+ * Moodle's external_value class (located in "/server/moodle/lib/externallib.php")
+ * should be changed. The relevant lines look like this in Moodle 4.0.0:
+ * 
+ *     620   class external_value extends external_description {
+ *    [...]
+ *     638      public function __construct($type, $desc='', $required=VALUE_REQUIRED,
+ *     639              $default=null, $allownull=NULL_ALLOWED) {
+ *    [...]
+ * 
+ * As you can see, external_value's constructor sets $allownull to NULL_ALLOWED by default.
+ * This is bad because $allownull seems to get explicitly passed in only 50% of all functions.
+ * The other half of functions don't specify any nullability of accepted parameters.
+ * 
+ * In order to extract a more accurate API, replace "NULL_ALLOWED" with "null" ($allownull=null).
+ * The extraction script differentiates between three possible values "true", "false" and "null"
+ * when reading $allownull and only adds "nullable: true|false" to the JSON entry if it's boolean.
  */
 
 require_once('./config.php');
@@ -39,8 +60,8 @@ function describe($params, $includeRequired)
 
     $result->type = $type;
 
-    if (property_exists($params, "allownull") && $params->allownull) {
-        $result->nullable = true;
+    if (property_exists($params, "allownull") && is_bool($params->allownull)) {
+        $result->nullable = $params->allownull;
     }
     if ($includeRequired) {
         if ($params->required == VALUE_REQUIRED) {
