@@ -17,7 +17,7 @@ defineProps({
 
     <ul class="big-items">
         <li v-for="(body, fn) in functions">
-            <a :href="'#' + fn" class="item">
+            <a :href="'#' + fn" class="item no-line">
                 <b>{{ fn }}</b>
                 <i>{{ body.description }}</i>
             </a>

@@ -28,8 +28,17 @@ a {
   color: inherit;
   transition: color 0.1s;
 }
+a > * {
+  transition: inherit;
+}
+a:hover {
+  transition-duration: 0s;
+}
 a:not(.no-line):hover {
   text-decoration: underline;
+  color: var(--color-link-hover);
+}
+a:hover b {
   color: var(--color-link-hover);
 }
 a.link, p a {
@@ -44,27 +53,23 @@ p {
 
 input, textarea {
   font: inherit;
-  padding: 6px 2px;
-  margin: 12px 8px 13px 8px;
+  padding: 4px 8px;
+  margin: 6px;
   transition: 0.15s;
-  background: none;
+  background: var(--color-input-background);
 }
 input {
-  border: none;
-  border-bottom: 1px solid var(--color-comment);
+  border-radius: 4px;
+  border: var(--border-width) solid var(--color-border-hover);
   outline: none;
 }
 input:hover, input:focus {
-  border-bottom-width: 2px;
-  margin-bottom: 12px;
-}
-input:focus {
-  border-bottom-color: var(--color-primary);
+  border-color: var(--color-border);
 }
 
 code {
   display: inline-block;
-  background-color: var(--color-border);
+  background-color: var(--color-code-background);
   padding: 8px 20px;
   border-radius: 4px;
   box-sizing: border-box;
@@ -107,28 +112,33 @@ th, td {
 
 strong, b {
   font-weight: bold;
-  color: var(--color-primary);
-  transition: 0.4s;
 }
 
-nav {
+aside {
+  background-color: var(--color-background-soft);
   display: flex;
   flex-direction: column;
-  max-width: 30em;
+  width: 28em;
+  max-width: 25vw;
+  border-right: var(--border);
 }
-nav > ul {
+aside li > :not(ul) {
+  display: inline-flex;
+}
+aside > ul {
+  border-top: var(--border);
   overflow-y: auto;
   flex: 1;
-  padding: 0 12px;
+  padding: 6px 12px;
 }
-nav ul {
+aside ul {
   padding-inline-start: 12px;
   list-style-type: none;
 }
-nav a {
-  word-wrap: break-word;
+aside a {
+  word-break: break-all;
 }
-nav .path {
+aside .path > a {
   font-style: italic;
 }
 
@@ -155,25 +165,40 @@ ul.big-items .item {
   padding: 8px 0;
 }
 
+h1 {
+  color: var(--color-heading);
+}
+
 main h2 {
   margin-top: 1em;
 }
 
-header h2 {
-  text-shadow: 0 0 6px #0002;
+svg {
+  fill: inherit;
 }
+
 header {
   display: flex;
   background-color: var(--color-menubar);
-  padding: 8px 12px;
-  color: var(--color-heading);
-  box-shadow: 0 0 6px #0004;
+  border-bottom: var(--border);
+  padding: 0.5em 0.5em;
+  color: var(--color-title);
+  fill: var(--color-title);
+  box-shadow: 0 0 6px #0003;
   z-index: 1;
+}
+header a {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+header h2 {
+  font-size: 1.3em;
 }
 footer {
   display: flex;
   justify-content: space-between;
   padding: 8px 12px;
   background-color: var(--vt-c-black-soft);
-  color: white;
+  color: var(--vt-c-text-dark-2);
 }

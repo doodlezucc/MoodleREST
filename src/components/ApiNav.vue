@@ -10,10 +10,10 @@ defineProps({
 </script>
 
 <template>
-  <nav>
+  <aside>
     <input type="text" placeholder="Search...">
     <ul>
       <NavItem v-for="(component, key) in api" :name=key :children=component />
     </ul>
-  </nav>
+  </aside>
 </template>
