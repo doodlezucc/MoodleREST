@@ -1,4 +1,5 @@
 @import './base.css';
+@import './code.css';
 
 html, body {
   width: 100%;
@@ -6,7 +7,7 @@ html, body {
 }
 
 ::selection {
-  background-color: #ffc793;
+  background-color: var(--color-selection);
 }
 
 .main {
@@ -59,30 +60,12 @@ input, textarea {
   background: var(--color-input-background);
 }
 input {
-  border-radius: 4px;
+  border-radius: 3px;
   border: var(--border-width) solid var(--color-border-hover);
   outline: none;
 }
 input:hover, input:focus {
   border-color: var(--color-border);
-}
-
-code {
-  display: inline-block;
-  background-color: var(--color-code-background);
-  padding: 8px 20px;
-  border-radius: 4px;
-  box-sizing: border-box;
-  white-space: pre-wrap;
-  margin: 0.4em 0;
-}
-code.inline {
-  display: inline;
-  padding: 4px;
-  margin: 0;
-}
-code b {
-  color: inherit;
 }
 
 h3 {
@@ -91,6 +74,7 @@ h3 {
 
 .comment {
   color: var(--color-comment);
+  background: none;
 }
 
 .unlist {

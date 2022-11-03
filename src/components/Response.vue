@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <code v-if="response">
-        <Field :field=response />
+        <li><Field :field=response /></li>
     </code>
     <p v-else>
         <i>No response.</i>

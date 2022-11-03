@@ -1,5 +1,6 @@
 <script setup>
 import Field from "./Field.vue";
+import simpleType from "./js/datatype";
 
 defineProps({
     request: {
@@ -7,6 +8,10 @@ defineProps({
         required: true
     },
 });
+
+function isPlain(type) {
+    return type !== 'object' && type !== 'array'
+}
 </script>
 
 <template>
@@ -23,9 +28,9 @@ defineProps({
                     <span :class="{ required: param.required }">{{ paramName }}</span>
                 </code>
             </td>
-            <td v-if="param.type !== 'object'">{{ param.description }}</td>
-            <td v-if="param.type !== 'object'">
-                <code class="inline">{{ param.type }}</code>
+            <td v-if="isPlain(param.type)">{{ param.description }}</td>
+            <td v-if="isPlain(param.type)">
+                <code class="inline" :data-type="simpleType(param.type)">{{ param.type }}</code>
             </td>
             <td v-else colspan="2">
                 <code><Field :field=param /></code>
@@ -33,7 +38,8 @@ defineProps({
 
             <td>
                 <i v-if="param.required">required</i>
-                <code v-else class="inline">{{ param.type === "string" ? `"${param.default}"` : param.default }}</code>
+                <code v-else
+                    class="inline">{{ simpleType(param.type) === "string" ? `"${param.default}"` : param.default }}</code>
             </td>
         </tr>
     </table>
