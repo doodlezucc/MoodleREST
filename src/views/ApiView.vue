@@ -17,6 +17,10 @@ const route = useRoute()
 const fn = ref()
 function setDocFn(val) {
   fn.value = (val ?? route.hash).substring(1)
+  document.querySelector("main")?.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
 }
 
 setDocFn()
