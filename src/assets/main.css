@@ -88,11 +88,15 @@ h3 {
 table {
   border-collapse: collapse;
 }
-
 th, td {
   border: 1px solid var(--color-comment);
   padding: 8px;
 }
+table code {
+  display: flex;
+  margin: 0;
+}
+
 
 strong, b {
   font-weight: bold;

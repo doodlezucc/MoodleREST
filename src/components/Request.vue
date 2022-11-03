@@ -15,7 +15,7 @@ function isPlain(type) {
 </script>
 
 <template>
-    <table v-if="Object.keys(request).length">
+    <!-- <table v-if="Object.keys(request).length">
         <tr>
             <th>Parameter</th>
             <th>Description</th>
@@ -42,7 +42,15 @@ function isPlain(type) {
                     class="inline">{{ simpleType(param.type) === "string" ? `"${param.default}"` : param.default }}</code>
             </td>
         </tr>
-    </table>
+    </table> -->
+    <code v-if="request">
+      <li v-for="(prop, key) in request">
+        <span :class="{ key: true, required: prop.required }">{{ key }}</span>
+        -
+        <Field :field=prop />
+      </li>
+        <!-- <li><Field :field="{ type: 'object', properties: request }" /></li> -->
+    </code>
     <p v-else>
         <i>No request parameters.</i>
     </p>
