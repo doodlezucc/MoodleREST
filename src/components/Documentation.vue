@@ -31,6 +31,7 @@ for (const compname in api) {
 </script>
 
 <template>
-  <CompDoc v-if="isComponent" :name=name :functions=body />
-  <FuncDoc v-else :name=name :body=body />
+  <h1>{{ name }}</h1>
+  <CompDoc v-if="isComponent" :functions=body />
+  <FuncDoc v-else :body=body />
 </template>

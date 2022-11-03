@@ -5,6 +5,10 @@ html, body {
   height: 100%;
 }
 
+::selection {
+  background-color: #ffc793;
+}
+
 .main {
   display: flex;
   flex: 1;
@@ -19,15 +23,43 @@ html, body {
   height: 100%;
 }
 
-a,
-.green {
+a {
   text-decoration: none;
-  color: rgb(76, 73, 255);
-  transition: 0.4s;
+  color: inherit;
+  transition: color 0.1s;
+}
+a:not(.no-line):hover {
+  text-decoration: underline;
+  color: var(--color-link-hover);
+}
+a.link, p a {
+  text-decoration: underline;
 }
 
-a:hover {
-  text-decoration: underline;
+p {
+  width: 55vw;
+  line-height: 1.4em;
+  margin: 0.6em 0;
+}
+
+input, textarea {
+  font: inherit;
+  padding: 6px 2px;
+  margin: 12px 8px 13px 8px;
+  transition: 0.15s;
+  background: none;
+}
+input {
+  border: none;
+  border-bottom: 1px solid var(--color-comment);
+  outline: none;
+}
+input:hover, input:focus {
+  border-bottom-width: 2px;
+  margin-bottom: 12px;
+}
+input:focus {
+  border-bottom-color: var(--color-primary);
 }
 
 code {
@@ -37,14 +69,19 @@ code {
   border-radius: 4px;
   box-sizing: border-box;
   white-space: pre-wrap;
+  margin: 0.4em 0;
 }
 code.inline {
   display: inline;
   padding: 4px;
+  margin: 0;
+}
+code b {
+  color: inherit;
 }
 
 h3 {
-  margin-top: 12px;
+  margin-top: 2em;
 }
 
 .comment {
@@ -70,20 +107,26 @@ th, td {
 
 strong, b {
   font-weight: bold;
+  color: var(--color-primary);
+  transition: 0.4s;
 }
 
 nav {
   display: flex;
   flex-direction: column;
+  max-width: 30em;
 }
 nav > ul {
-  overflow: auto;
+  overflow-y: auto;
   flex: 1;
   padding: 0 12px;
 }
 nav ul {
   padding-inline-start: 12px;
   list-style-type: none;
+}
+nav a {
+  word-wrap: break-word;
 }
 nav .path {
   font-style: italic;
@@ -92,7 +135,7 @@ nav .path {
 main {
   overflow-y: auto;
   flex: 1;
-  padding: 40px 64px;
+  padding: 2.5em 3em 20vh 3em;
 }
 
 .required {
@@ -107,7 +150,30 @@ ul.big-items > li {
   list-style-type: none;
 }
 ul.big-items .item {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   padding: 8px 0;
+}
+
+main h2 {
+  margin-top: 1em;
+}
+
+header h2 {
+  text-shadow: 0 0 6px #0002;
+}
+header {
+  display: flex;
+  background-color: var(--color-menubar);
+  padding: 8px 12px;
+  color: var(--color-heading);
+  box-shadow: 0 0 6px #0004;
+  z-index: 1;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: var(--vt-c-black-soft);
+  color: white;
 }

@@ -15,9 +15,9 @@ const isEndpoint = !children
 
 <template>
   <li>
-    <a :class="{ path: !isEndpoint }" :href="'#' + name">{{ name }}</a>
+    <a :class="{ path: !isEndpoint }" :href="'#' + name" :title="name">{{ name }}</a>
     <ul v-if="!isEndpoint">
-      <NavItem v-for="(value, key) in children" :name=key />
+      <NavItem v-for="(_, key) in children" :name=key />
     </ul>
   </li>
 </template>

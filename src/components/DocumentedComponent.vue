@@ -3,8 +3,7 @@ import Function from "./DocumentedFunction.vue";
 
 defineProps({
     name: {
-        type: String,
-        required: true
+        type: String
     },
     functions: {
         type: Object,
@@ -14,7 +13,8 @@ defineProps({
 </script>
 
 <template>
-    <h2>{{ name }}</h2>
+    <h2 v-if="name">{{ name }}</h2>
+
     <ul class="big-items">
         <li v-for="(body, fn) in functions">
             <a :href="'#' + fn" class="item">

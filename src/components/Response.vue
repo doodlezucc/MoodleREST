@@ -3,14 +3,16 @@ import Field from "./Field.vue";
 
 defineProps({
     response: {
-        type: Object,
-        required: true
+        type: Object
     },
 });
 </script>
 
 <template>
-    <code>
+    <code v-if="response">
         <Field :field=response />
     </code>
+    <p v-else>
+        <i>No response.</i>
+    </p>
 </template>

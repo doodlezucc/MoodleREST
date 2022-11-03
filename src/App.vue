@@ -1,17 +1,15 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView } from "vue-router";
+import PageHeader from "./components/Header.vue";
+import PageFooter from "./components/Footer.vue";
 </script>
 
 <template>
-  <header>
-    <h1>Moodle API Reference</h1>
-  </header>
+  <PageHeader />
 
   <div class="main">
     <RouterView />
   </div>
 
-  <footer>
-    <p>Footer</p>
-  </footer>
+  <PageFooter />
 </template>
