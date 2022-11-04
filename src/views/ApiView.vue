@@ -1,7 +1,7 @@
 <script setup>
 import { ref, toRef, watch } from 'vue';
 import { onBeforeRouteUpdate, routeLocationKey, useRoute, useRouter } from 'vue-router';
-import ApiNav from '../components/ApiNav.vue';
+import ApiSidebar from '../components/ApiSidebar.vue';
 import Documentation from '../components/Documentation.vue';
 import Overview from '../components/Overview.vue';
 
@@ -30,7 +30,7 @@ onBeforeRouteUpdate((to, from) => {
 </script>
 
 <template>
-  <ApiNav :api=api />
+  <ApiSidebar :api=api />
   <main>
     <Documentation v-if="fn" :api=api :name=fn :key=fn />
     <Overview v-else :api=api />

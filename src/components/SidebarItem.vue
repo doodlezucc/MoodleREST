@@ -17,7 +17,7 @@ const isEndpoint = !children
   <li :class="{ path: !isEndpoint }">
     <a :href="'#' + name" :title="name">{{ name }}</a>
     <ul v-if="!isEndpoint">
-      <NavItem v-for="(_, key) in children" :name=key />
+      <SidebarItem v-for="(_, key) in children" :name=key />
     </ul>
   </li>
 </template>

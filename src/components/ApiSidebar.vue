@@ -1,5 +1,5 @@
 <script setup>
-import NavItem from "./NavItem.vue";
+import SidebarItem from "./SidebarItem.vue";
 
 defineProps({
   api: {
@@ -13,7 +13,7 @@ defineProps({
   <aside>
     <input type="text" placeholder="Search...">
     <ul>
-      <NavItem v-for="(component, key) in api" :name=key :children=component />
+      <SidebarItem v-for="(component, key) in api" :name=key :children=component />
     </ul>
   </aside>
 </template>
