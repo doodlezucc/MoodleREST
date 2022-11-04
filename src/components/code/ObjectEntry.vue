@@ -1,6 +1,6 @@
 <script setup>
 import Field from "./Field.vue";
-import simpleType from './js/datatype';
+import simpleType from '@/js/datatype';
 
 const { name, field } = defineProps({
   name: {

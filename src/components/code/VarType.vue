@@ -1,5 +1,5 @@
 <script setup>
-import simpleType from "./js/datatype";
+import simpleType from "@/js/datatype";
 
 const { field } = defineProps({
   field: {

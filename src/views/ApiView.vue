@@ -1,9 +1,9 @@
 <script setup>
-import { ref, toRef, watch } from 'vue';
-import { onBeforeRouteUpdate, routeLocationKey, useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import ApiSidebar from '../components/ApiSidebar.vue';
-import Documentation from '../components/Documentation.vue';
-import Overview from '../components/Overview.vue';
+import Documentation from '../components/documentation/Documentation.vue';
+import Overview from '../components/documentation/Overview.vue';
 
 defineProps({
   api: {
