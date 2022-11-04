@@ -1,37 +1,49 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { apiNameToPath } from '@/js/api-helpers.js';
+
 import ApiSidebar from '../components/ApiSidebar.vue';
 import Documentation from '../components/documentation/Documentation.vue';
 import Overview from '../components/documentation/Overview.vue';
+import Navigation from '../components/Navigation.vue';
 
-defineProps({
+const { api } = defineProps({
   api: {
     type: Object,
     required: true
   }
 });
 
-const route = useRoute()
+const route = useRoute();
 
-const fn = ref()
+const fn = ref();
 function setDocFn(val) {
-  fn.value = (val ?? route.hash).substring(1)
-  document.querySelector("main")?.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
+  const nval = (val ?? route.hash).substring(1);
+  if (nval !== fn.value) {
+    fn.value = nval;
+    document.querySelector('main')?.scrollTo({ top: 0 });
+  }
 }
 
-setDocFn()
-onBeforeRouteUpdate((to, from) => {
-  setDocFn(to.hash)
-})
+setDocFn();
+onBeforeRouteUpdate((to, _) => {
+  setDocFn(to.hash);
+});
+
+function navPath() {
+  let path = [['API Reference', '']];
+  if (fn.value) {
+    path = path.concat(apiNameToPath(fn.value, api));
+  }
+  return path;
+}
 </script>
 
 <template>
   <ApiSidebar :api=api />
   <main>
+    <Navigation :path="navPath()" />
     <Documentation v-if="fn" :api=api :name=fn :key=fn />
     <Overview v-else :api=api />
   </main>

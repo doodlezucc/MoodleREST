@@ -190,3 +190,24 @@ footer {
   background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-2);
 }
+
+nav {
+  position: sticky;
+}
+nav .separator {
+  pointer-events: none;
+  margin: 0 0.5em;
+}
+nav .separator::before {
+  content: "\276f";
+}
+nav > span:not(:first-child) > * {
+  display: inline-block;
+  transform: translateX(-0.2em);
+  opacity: 0.5;
+  animation: fade-in 0.3s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+@keyframes fade-in {
+  100% { opacity: 1; transform: translate(0px); }
+}
