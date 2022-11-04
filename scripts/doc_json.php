@@ -40,16 +40,30 @@ function trim_multiline($s)
     return preg_replace('/^\h+|\h+$/m', '', $s);
 }
 
-function describe($params, $includeRequired)
+/**
+ * Adds a "description" entry to `result`. If the parameter's description
+ * is the same as its name (or `null`), the entry is omitted.
+ */
+function insert_param_description($name, $param, &$result)
+{
+    if ($param->desc != null) {
+        if ($name != null) {
+            $nospace = str_replace(" ", "", $param->desc);
+            if ($name == $nospace) return;
+        }
+
+        $result->description = trim_multiline($param->desc);
+    }
+}
+
+function describe($params, $includeRequired, $name = null)
 {
     if (!is_object($params)) {
         return null;
     }
 
     $result = new stdClass();
-    if ($params->desc != null) {
-        $result->description = trim_multiline($params->desc);
-    }
+    insert_param_description($name, $params, $result);
     $result->type = "undefined";
 
     if ($params instanceof external_multiple_structure) {
@@ -62,7 +76,7 @@ function describe($params, $includeRequired)
         $result->properties = new stdClass();
 
         foreach ($params->keys as $attributname => $attribut) {
-            $result->properties->{$attributname} = describe($attribut, $includeRequired);
+            $result->properties->{$attributname} = describe($attribut, $includeRequired, $attributname);
         }
     } else {
         $type = $params->type;
