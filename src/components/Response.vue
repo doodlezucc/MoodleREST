@@ -4,7 +4,7 @@ import Field from "./Field.vue";
 defineProps({
     response: {
         type: Object
-    },
+    }
 });
 </script>
 

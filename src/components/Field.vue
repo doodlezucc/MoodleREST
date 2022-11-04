@@ -1,6 +1,7 @@
 <script setup>
 import Comment from "./Comment.vue";
-import simpleType from "./js/datatype";
+import VarType from "./VarType.vue";
+import ObjectEntry from "./ObjectEntry.vue";
 
 const { field } = defineProps({
   field: {
@@ -12,24 +13,18 @@ const { field } = defineProps({
     default: false
   }
 });
-
-const dataType = simpleType(field.type);
 </script>
 
 <template>
   <span v-if="field.type === 'object'">
-    <i><span :data-type="dataType">object</span></i> {
+    <VarType :field="field" /> {
     <Comment :content=field.description />
     <ul>
-      <li v-for="(prop, key) in field.properties">
-        <span :class="{ key: true, required: prop.required }">{{ key }}</span>
-        -
-        <Field :field=prop />
-      </li>
+      <ObjectEntry v-for="(prop, key) in field.properties" :name="key" :field="prop" />
     </ul>}
   </span>
   <span v-else-if="field.type === 'array'">
-    <i><span :data-type="dataType">array</span></i> [
+    <VarType :field="field" /> [
     <ul>
       <li>
         <Field :field=field.items :isArray="true" />
@@ -37,7 +32,7 @@ const dataType = simpleType(field.type);
     </ul>]
   </span>
   <span v-else>
-    <i :data-type="dataType">{{ field.type }}</i>
+    <VarType :field="field" />
     <Comment :content=field.description />
   </span>
 </template>

@@ -1,6 +1,5 @@
 <script setup>
-import Field from "./Field.vue";
-import simpleType from "./js/datatype";
+import ObjectEntry from "./ObjectEntry.vue";
 
 defineProps({
     request: {
@@ -43,12 +42,8 @@ function isPlain(type) {
             </td>
         </tr>
     </table> -->
-    <code v-if="request">
-      <li v-for="(prop, key) in request">
-        <span :class="{ key: true, required: prop.required }">{{ key }}</span>
-        -
-        <Field :field=prop />
-      </li>
+    <code v-if="Object.keys(request).length">
+      <ObjectEntry v-for="(prop, key) in request" :name="key" :field="prop" />
         <!-- <li><Field :field="{ type: 'object', properties: request }" /></li> -->
     </code>
     <p v-else>

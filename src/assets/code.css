@@ -5,7 +5,7 @@
   --syntax-green: #189140;
   --syntax-orange: #d37a07;
   --syntax-red: #da3131;
-  --syntax-pink: #e700dc;
+  --syntax-pink: #e02ed7;
 
   --code-type-weight: bold;
 
@@ -61,7 +61,7 @@ code .key {
 code li {
   list-style-type: none;
 }
-code li:hover > span > .comment {
+code li:hover > .comment, code li:hover > span > .comment {
   --color-comment: var(--color-comment-hover);
 }
 code li:hover > .key {
@@ -85,4 +85,9 @@ code li:hover::before {
   opacity: 1;
   width: 4px;
   transition-duration: 0.05s;
+}
+
+code .comment > span {
+  display: inline-flex;
+  white-space: pre-line;
 }
