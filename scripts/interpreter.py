@@ -24,7 +24,7 @@ r_array_sep = re.compile(r"=>|,", flags=re.M|re.S)
 r_assign_functions = re.compile(r"\$functions\s*=", flags=re.M|re.S)
 
 r_namespace = re.compile(r"^namespace\s*(\S+);", flags=re.M|re.S)
-r_class = re.compile(r"^\s*class\s*(\S+)(?:\s+extends\s+(\S+))?\s*{", flags=re.M|re.S)
+r_class = re.compile(r"^class\s*(\S+)(?:\s+extends\s+(\S+))?\s*{", flags=re.M|re.S)
 r_doc = re.compile(r"/\*.*?\*/", flags=re.M|re.S)
 r_doc_tag = re.compile(r"@(since|deprecated|todo)\s+(.*?)$", flags=re.M|re.S)
 r_semver = re.compile(r"\d+(?:\.\d+)+")
@@ -259,24 +259,20 @@ def extract_classes(file: Path, lookup: dict):
 def make_class_lookup(root: Path):
     lookup = dict()
 
-    files = root.rglob("*.php")
+    files = list(root.rglob("*.php"))
+    num = len(files)
+    numf = float(num)
+    count = 0
     for file in files:
+        count += 1
+        if count % 100 == 0:
+            percent = "{0:.1%}".format(count / numf)
+            print(f"Finding classes... {percent} ({count}/{num})")
         extract_classes(file, lookup)
     
     return lookup
 
 def extract_function_info(spec: PhpArray, class_defs: Dict[str, str], cwd: Path):
-    # Lazy class loading: not worth it, really
-    # try:
-    #     p = cast(str, spec.entries["classpath"].resolve())
-    #     path = cwd.joinpath(p)
-    #     print(f"Adding classes from explicit classpath {path}")
-    #     extract_classes(path, class_defs)
-    # except FileNotFoundError:
-    #     print(f"WARNING: Explicit classpath {path} can't be resolved!")
-    # except (AttributeError, FileNotFoundError, KeyError):
-    #     path = None
-
     # Some $functions don't have methodnames and default to "execute()"
     try:
         method = cast(str, spec.entries["methodname"].resolve())
@@ -291,7 +287,6 @@ def extract_function_info(spec: PhpArray, class_defs: Dict[str, str], cwd: Path)
     definition = class_defs[classid]
 
     # print(f"Looking for {method} in {classid}")
-
     return_docs = find_docs(definition, f"{method}_returns")
     return return_docs
 
@@ -314,7 +309,7 @@ def extract_from_services(services: Path, cwd: Path, cls_lookup: dict, fns: dict
 def extract_all(root: Path, limit = -1):
     print("Reading ALL class definitions")
     cls_lookup = make_class_lookup(root)
-    print("yup")
+    print("Class lookup created. Resolving web service functions...")
     all_services = find_services_php(root)
 
     wsfns = dict()
