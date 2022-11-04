@@ -30,6 +30,16 @@
 require_once('./config.php');
 require($CFG->dirroot . '/webservice/lib.php');
 
+/**
+ * Trims each line of the input.
+ * @param string $s
+ * @return string
+ */
+function trim_multiline($s)
+{
+    return preg_replace('/^\h+|\h+$/m', '', $s);
+}
+
 function describe($params, $includeRequired)
 {
     if (!is_object($params)) {
@@ -38,7 +48,7 @@ function describe($params, $includeRequired)
 
     $result = new stdClass();
     if ($params->desc != null) {
-        $result->description = $params->desc;
+        $result->description = trim_multiline($params->desc);
     }
     $result->type = "undefined";
 
@@ -99,7 +109,7 @@ function fn_to_object($spec, $convert = true)
 
     return (object) [
         "id" => $spec->id,
-        "description" => $description->description,
+        "description" => trim_multiline($description->description),
         "request" => $params,
         "response" => $returns,
         "requiresLogin" => $description->loginrequired,
