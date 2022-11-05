@@ -1,32 +1,19 @@
 @import './base.css';
 
 :root {
-  --syntax-blue: #4a47ff;
-  --syntax-green: #189140;
-  --syntax-orange: #d37a07;
-  --syntax-red: #da3131;
-  --syntax-pink: #e02ed7;
+  --syntax-blue: #6ebeff;
+  --syntax-green: #53d17d;
+  --syntax-orange: #f3ab89;
+  --syntax-red: #ff614d;
+  --syntax-pink: #b392ff;
 
-  --code-type-weight: bold;
+  --code-type-weight: normal;
 
-  --color-comment: var(--vt-c-text-light-2);
-  --color-comment-hover: var(--vt-c-text-light-1);
-  --color-code-background: var(--color-background-mute);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --syntax-blue: #7bb9ff;
-    --syntax-green: #53d17d;
-    --syntax-orange: #f3ab89;
-    --syntax-red: #db5252;
-    --syntax-pink: #f55ebb;
-
-    --code-type-weight: normal;
-
-    --color-comment: var(--vt-c-divider-dark-1);
-    --color-comment-hover: var(--color-text);
-  }
+  --color-comment: var(--vt-c-divider-dark-1);
+  --color-comment-hover: var(--vt-c-text-light);
+  --color-code: var(--vt-c-text-dark-2);
+  --color-code-background: var(--vt-c-black-mute);
+  --color-code-key: var(--vt-c-text-light-2);
 }
 
 [data-type] { font-weight: var(--code-type-weight); }
@@ -39,10 +26,13 @@
 code {
   display: inline-block;
   background-color: var(--color-code-background);
-  padding: 8px 20px;
+  padding: 0.6em 0.8em;
   border-radius: 4px;
   box-sizing: border-box;
   margin: 0.4em 0;
+  color: var(--color-code);
+
+  --color-selection: #5e4433;
 }
 code.inline {
   display: inline;
@@ -58,16 +48,26 @@ code .key {
   border-radius: 4px;
 }
 
+.comment {
+  color: var(--color-comment);
+  background: none;
+}
+
+code ul {
+  padding-inline-start: 1.5em;
+}
+
 code li {
   list-style-type: none;
 }
 code li:hover > .comment, code li:hover > span > .comment {
-  --color-comment: var(--color-comment-hover);
+  color: var(--color-comment-hover);
 }
 code li:hover > .key {
-  background-color: var(--color-border-hover);
+  background-color: var(--color-code-key);
+  color: var(--vt-c-text-dark-1);
 }
-code li::before {
+code > * li::before {
   pointer-events: none;
   content: "";
   width: 2px;
@@ -75,11 +75,11 @@ code li::before {
   top: 4px;
   bottom: 4px;
   position: absolute;
-  background-color: var(--color-border-hover);
-  opacity: 0.5;
+  background-color: var(--color-code-key);
+  opacity: 0.7;
   transition: 0.2s;
 }
-code li:hover::before {
+code > * li:hover::before {
   top: 0;
   bottom: 0;
   opacity: 1;

@@ -34,10 +34,10 @@ a > * {
 }
 a:hover {
   transition-duration: 0s;
+  color: var(--color-link-hover);
 }
 a:not(.no-line):hover {
   text-decoration: underline;
-  color: var(--color-link-hover);
 }
 a:hover b {
   color: var(--color-link-hover);
@@ -52,17 +52,35 @@ p {
   margin: 0.6em 0;
 }
 
-input, textarea {
+button, input, textarea {
+  color: inherit;
   font: inherit;
   padding: 4px 8px;
   margin: 6px;
   transition: 0.15s;
+  outline: none;
+  background: none;
+}
+button {
+  display: flex;
+  cursor: pointer;
+  border: none;
+  min-height: 2em;
+}
+button.icon {
+  min-width: 2em;
+  padding: 0;
+}
+button:hover {
+  color: var(--color-link-hover);
+  fill: var(--color-link-hover);
+}
+input, textarea {
   background: var(--color-input-background);
 }
 input {
   border-radius: 3px;
   border: var(--border-width) solid var(--color-border-hover);
-  outline: none;
 }
 input:hover, input:focus {
   border-color: var(--color-border);
@@ -70,11 +88,6 @@ input:hover, input:focus {
 
 h3 {
   margin-top: 2em;
-}
-
-.comment {
-  color: var(--color-comment);
-  background: none;
 }
 
 .unlist {
@@ -159,17 +172,21 @@ h1 {
 
 main h2 {
   margin-top: 1em;
+  color: var(--color-h2);
 }
 
 svg {
   fill: inherit;
 }
 
-header {
+header, footer {
   display: flex;
+  justify-content: space-between;
+}
+header {
   background-color: var(--color-menubar);
   border-bottom: var(--border);
-  padding: 0.5em 0.5em;
+  padding: 0.2em 0.5em;
   color: var(--color-title);
   fill: var(--color-title);
   box-shadow: 0 0 6px #0003;
@@ -184,8 +201,6 @@ header h2 {
   font-size: 1.3em;
 }
 footer {
-  display: flex;
-  justify-content: space-between;
   padding: 8px 12px;
   background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-2);
