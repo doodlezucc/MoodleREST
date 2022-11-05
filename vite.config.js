@@ -8,12 +8,13 @@ export default defineConfig({
   plugins: [vue()],
   ssgOptions: {
     script: "async",
-    formatting: "prettify"
+    formatting: "prettify",
+    mock: true
   },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base: '/MoodleREST/'
+  base: process.env.NODE_ENV === 'production' ? '/MoodleREST/' : '/'
 })
