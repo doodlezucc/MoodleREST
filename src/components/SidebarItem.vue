@@ -1,8 +1,14 @@
 <script setup>
-const { name, children } = defineProps({
+import { apiNameToPath } from '@/js/api-helpers.js';
+
+const { name, active, children } = defineProps({
   name: {
     type: String,
     required: true,
+  },
+  active: {
+    type: Array,
+    required: true
   },
   children: {
     type: Object,
@@ -10,14 +16,14 @@ const { name, children } = defineProps({
   }
 });
 
-const isEndpoint = !children
+const isEndpoint = !children;
 </script>
 
 <template>
-  <li :class="{ path: !isEndpoint }">
+  <li :class="{ path: !isEndpoint, active: active.includes(name) }">
     <a :href="'#' + name" :title="name">{{ name }}</a>
     <ul v-if="!isEndpoint">
-      <SidebarItem v-for="(_, key) in children" :name=key />
+      <SidebarItem v-for="(_, key) in children" :name=key :active="active" />
     </ul>
   </li>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import { apiNameToPath } from '@/js/api-helpers.js';
+import { apiNameToPath, apiNameToPathHref } from '@/js/api-helpers.js';
 
 import ApiSidebar from '../components/ApiSidebar.vue';
 import Documentation from '../components/documentation/Documentation.vue';
@@ -34,14 +34,18 @@ onBeforeRouteUpdate((to, _) => {
 function navPath() {
   let path = [['API Reference', '']];
   if (fn.value) {
-    path = path.concat(apiNameToPath(fn.value, api));
+    path = path.concat(apiNameToPathHref(fn.value, api));
   }
   return path;
+}
+
+function activePath() {
+  return apiNameToPath(fn.value, api);
 }
 </script>
 
 <template>
-  <ApiSidebar :api=api />
+  <ApiSidebar :api=api :active="activePath()" />
   <main>
     <Navigation :path="navPath()" />
     <Documentation v-if="fn" :api=api :name=fn :key=fn />
