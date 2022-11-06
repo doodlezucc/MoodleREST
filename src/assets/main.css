@@ -50,6 +50,7 @@ p {
   width: 55vw;
   line-height: 1.4em;
   margin: 0.6em 0;
+  white-space: pre-line;
 }
 
 button, input, textarea {
@@ -225,4 +226,28 @@ nav > span:not(:first-child) > * {
 
 @keyframes fade-in {
   100% { opacity: 1; transform: translate(0px); }
+}
+
+.badge {
+  user-select: none;
+  display: inline-flex;
+  color: var(--color-background);
+  border-radius: 100vw;
+  overflow: hidden;
+}
+.badge > * {
+  background-color: var(--color-code-background);
+  padding: 0 6px;
+}
+.badge > :first-child {
+  padding-left: 10px;
+}
+.badge > :last-child {
+  padding-right: 10px;
+}
+
+.badge-list {
+  display: flex;
+  gap: 4px;
+  vertical-align: top;
 }

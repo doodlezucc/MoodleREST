@@ -10,7 +10,7 @@
   --code-type-weight: normal;
 
   --color-comment: var(--vt-c-divider-dark-1);
-  --color-comment-hover: var(--vt-c-text-light);
+  --color-comment-hover: var(--vt-c-text-dark-2);
   --color-code: var(--vt-c-text-dark-2);
   --color-code-background: var(--vt-c-black-mute);
   --color-code-key: var(--vt-c-text-light-2);
@@ -32,7 +32,7 @@ code {
   margin: 0.4em 0;
   color: var(--color-code);
 
-  --color-selection: #5e4433;
+  --color-selection: #435d7a;
 }
 code.inline {
   display: inline;
