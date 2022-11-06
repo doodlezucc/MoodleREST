@@ -41,6 +41,10 @@
   --section-gap: 160px;
   --border-width: 2px;
   --border: var(--border-width) solid var(--color-border-hover);
+
+  --color-badge-background: var(--color-text);
+  --color-badge-good: #1e85da;
+  --color-badge-bad: var(--syntax-red);
 }
 
 *,

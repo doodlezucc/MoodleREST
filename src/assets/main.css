@@ -169,6 +169,12 @@ ul.big-items .item {
 
 h1 {
   color: var(--color-heading);
+  display: inline-flex;
+}
+h1 + .badge-list {
+  display: inline-flex;
+  margin: 0 8px;
+  vertical-align: text-bottom;
 }
 
 main h2 {
@@ -248,6 +254,7 @@ nav > span:not(:first-child) > * {
 
 .badge-list {
   display: flex;
+  margin: 4px 0;
   gap: 4px;
   vertical-align: top;
 }

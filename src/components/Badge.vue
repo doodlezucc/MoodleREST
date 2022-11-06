@@ -5,8 +5,7 @@ defineProps({
     required: true
   },
   value: {
-    type: String,
-    required: true
+    type: String
   },
   color: {
     type: String,
@@ -17,7 +16,7 @@ defineProps({
 
 <template>
   <span class="badge">
-    <span>{{ text }}</span>
-    <b :style="`background-color:${color}`">{{ value }}</b>
+    <span v-if="value != undefined">{{ text }}</span>
+    <b :style="`background-color:${color}`">{{ value ?? text }}</b>
   </span>
 </template>
