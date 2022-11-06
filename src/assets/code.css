@@ -24,13 +24,14 @@
 [data-type="array"] { color: var(--syntax-pink); }
 
 code {
-  display: inline-block;
+  display: block;
   background-color: var(--color-code-background);
   padding: 0.6em 0.8em;
   border-radius: 4px;
   box-sizing: border-box;
   margin: 0.4em 0;
   color: var(--color-code);
+  width: fit-content;
 
   --color-selection: #435d7a;
 }
@@ -38,6 +39,7 @@ code.inline {
   display: inline;
   padding: 4px;
   margin: 0;
+  width: auto;
 }
 code b {
   color: inherit;

@@ -22,14 +22,13 @@ if (body.since) {
     <Badge v-if="body.requiresLogin" text='Login required' :color="'var(--color-badge-bad)'" />
     <Badge v-if="!body.ajaxAllowed" text='No AJAX' :color="'var(--color-badge-bad)'" />
   </div>
-  <div class="badge-list">
-    <Badge text='Version' :value="version" />
-    <Badge v-if="body.deprecated" text='Deprecated' :value="body.deprecated" :color="'var(--color-badge-bad)'" />
-    <Badge v-if="body.todo" text='TODO' :value="body.todo" :color="'var(--color-badge-bad)'" />
-    <Badge v-if="body.services.length" text='Services' :value="body.services.join(', ')"
-      :color="'var(--color-badge-good)'" />
-  </div>
   <p>{{ body.description }}</p>
+
+  <div><b>Version</b>: {{ version }}</div>
+  <!-- <div v-if="body.services.length"><b>Services</b>: {{ body.services.join(', ') }}</div> -->
+  <!-- <div v-else><b>Services</b>: none</div> -->
+  <div v-if="body.deprecated"><b>Deprecated</b>: {{ body.deprecated }}</div>
+  <div v-if="body.todo"><b>TODO</b>: {{ body.todo }}</div>
 
   <h3>Request</h3>
   <Request :request=body.request />
