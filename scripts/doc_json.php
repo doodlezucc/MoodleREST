@@ -98,6 +98,12 @@ function describe($params, $includeRequired, $name = null)
     return $result;
 }
 
+function sql_array($s)
+{
+    if ($s == "") return [];
+    return explode(", ", $s);
+}
+
 function fn_to_object($spec, $convert = true)
 {
     $description = external_api::external_function_info($spec);
@@ -124,11 +130,13 @@ function fn_to_object($spec, $convert = true)
     return (object) [
         "id" => $spec->id,
         "description" => trim_multiline($description->description),
-        "request" => $params,
-        "response" => $returns,
+        "type" => $description->type,
         "requiresLogin" => $description->loginrequired,
         "ajaxAllowed" => $description->allowed_from_ajax,
-        "services" => $description->services,
+        "capabilities" => sql_array($description->capabilities),
+        "services" => sql_array($description->services),
+        "request" => $params,
+        "response" => $returns
     ];
 }
 
