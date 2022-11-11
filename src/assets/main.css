@@ -160,7 +160,7 @@ li:not(.path).active > a {
   background-color: var(--color-background-mute);
   border-radius: 4px;
 }
-li::before {
+li li::before {
   pointer-events: none;
   content: "";
   width: 2px;

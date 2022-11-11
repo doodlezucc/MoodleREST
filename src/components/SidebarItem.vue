@@ -1,6 +1,4 @@
 <script setup>
-import { apiNameToPath } from '@/js/api-helpers.js';
-
 const { name, active, children } = defineProps({
   name: {
     type: String,
