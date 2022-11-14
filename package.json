@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite-ssg build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,7 +14,6 @@
     "@vitejs/plugin-vue": "^3.1.2",
     "@vueuse/head": "^0.9.8",
     "vite": "^3.1.8",
-    "vite-ssg": "^0.21.1",
     "vue-router": "^4.1.6"
   }
 }
