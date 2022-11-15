@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { Entry } from "../js/search";
+import { ref, toRaw } from "vue";
+import { apiSearchEntries } from "../js/api-helpers";
 import SearchBar from "./SearchBar.vue";
 import SidebarItem from "./SidebarItem.vue";
 
@@ -15,19 +15,10 @@ const { api, active } = defineProps({
   }
 });
 
-const entries = [];
-for (const category in api) {
-  const fns = api[category];
-
-  for (const fnname in fns) {
-    const fn = fns[fnname];
-    entries.push(new Entry(fnname, fn.description));
-  }
-}
+const entries = apiSearchEntries(api);
 
 const query = ref("");
 const results = ref([]);
-
 const doFilter = ref(false);
 
 function onSearch(q, res) {

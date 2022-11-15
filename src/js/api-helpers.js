@@ -1,3 +1,5 @@
+import { Entry } from "./search";
+
 function href(key) {
   return [key, '#' + key]
 }
@@ -18,4 +20,17 @@ export function apiNameToPath(name, api) {
     }
   }
   return [];
+}
+
+export function apiSearchEntries(api) {
+  const entries = [];
+  for (const category in api) {
+    const fns = api[category];
+
+    for (const fnname in fns) {
+      const fn = fns[fnname];
+      entries.push(new Entry(fnname, fn.description));
+    }
+  }
+  return entries;
 }
