@@ -88,6 +88,37 @@ function searchEntries(query, entries) {
     return results;
 }
 
+/**
+ * @param {SearchResult[]} results
+ */
+function sortResults(results) {
+    /**
+     * @param {Match[]} a
+     * @param {Match[]} b
+     */
+    function mi(a, b) {
+        if (a.length == 0) {
+            if (b.length == 0) return 0;
+            return 100;
+        }
+        if (b.length == 0) return -100;
+
+        if (a[0].start == 0) {
+            if (b[0].start == 0) return 0;
+            return -1;
+        }
+        if (b[0].start == 0) return 1;
+        return 0;
+    }
+
+    return results.sort((a, b) => {
+        let cmp = mi(a.titleMatches, b.titleMatches);
+
+        if (cmp == 0) return a.entry.title.localeCompare(b.entry.title);
+        return cmp;
+    });
+}
+
 export class Searcher {
     /**
      * @param {Array<Entry>} entries
@@ -108,7 +139,8 @@ export class Searcher {
         const query = new Query(Array.from(terms));
         if (!query.terms.length) return [];
 
-        const results = searchEntries(query, this.entries);
+        let results = searchEntries(query, this.entries);
+        results = sortResults(results);
 
         this.cache = results;
         this.lastQuery = q;
