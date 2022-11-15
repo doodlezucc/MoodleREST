@@ -17,14 +17,14 @@ const { api, active } = defineProps({
 
 const entries = apiSearchEntries(api);
 
-const query = ref("");
+const query = ref(null);
 const results = ref([]);
 const doFilter = ref(false);
 
 function onSearch(q, res) {
   query.value = q;
   results.value = res;
-  doFilter.value = q.length > 0;
+  doFilter.value = q.terms.length > 0;
 }
 </script>
 
@@ -35,7 +35,7 @@ function onSearch(q, res) {
       <SidebarItem v-for="(component, key) in api" :name="key" :children="component" :active="active" />
     </ul>
     <ul v-else>
-      <SidebarItem v-for="result of results" :name="result.entry.title" :active="active" />
+      <SidebarItem v-for="result of results" :name="result.entry.title" :active="active" :query="query" />
     </ul>
   </aside>
 </template>

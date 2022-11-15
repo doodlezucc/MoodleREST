@@ -40,7 +40,7 @@ function escapeRegExp(s) {
     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-class Query {
+export class Query {
     /**
      * @param {Array<string>} terms
      */
@@ -119,6 +119,16 @@ function sortResults(results) {
     });
 }
 
+/**
+ * @param {string} q
+ */
+export function makeQuery(q) {
+    // Split into non-empty search terms
+    const terms = new Set(q.split(" "));
+    terms.delete("");
+    return new Query(Array.from(terms));
+}
+
 export class Searcher {
     /**
      * @param {Array<Entry>} entries
@@ -126,24 +136,20 @@ export class Searcher {
     constructor(entries) {
         this.entries = entries;
         this.cache = [];
-        this.lastQuery = "";
+        this.lastQuery = new Query([]);
     }
 
     /**
-     * @param {string} q
+     * @param {Query} query
      */
-    search(q) {
-        // Split into non-empty search terms
-        const terms = new Set(q.split(" "));
-        terms.delete("");
-        const query = new Query(Array.from(terms));
+    search(query) {
         if (!query.terms.length) return [];
 
         let results = searchEntries(query, this.entries);
         results = sortResults(results);
 
         this.cache = results;
-        this.lastQuery = q;
+        this.lastQuery = query;
         return results;
     }
 }

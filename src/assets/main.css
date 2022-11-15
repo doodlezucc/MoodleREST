@@ -126,7 +126,7 @@ aside {
   border-right: var(--border);
 }
 aside li > :not(ul) {
-  display: inline-flex;
+  display: inline-block;
 }
 aside ul {
   padding-inline-start: 1em;
@@ -182,6 +182,11 @@ li.active::before, li:hover::before {
 /* li.active li.active ~ li:not(:hover)::before, */
 aside li:not(.active) li::before {
   opacity: 0;
+}
+
+.highlight {
+  background-color: var(--color-selection);
+  border-radius: 4px;
 }
 
 main {
