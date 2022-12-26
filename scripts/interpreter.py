@@ -396,6 +396,9 @@ def read_param_type_defs(root: Path):
         comment = match[2]
         key = match[3]
 
+        if "alias" in comment.lower(): # Skip alias types
+            continue
+
         tags = parse_docs(comment)
         comment = get_comment_text(comment)
 
