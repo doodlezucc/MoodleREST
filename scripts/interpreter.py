@@ -396,14 +396,14 @@ def read_param_type_defs(root: Path):
         comment = match[2]
         key = match[3]
 
-        if "alias" in comment.lower(): # Skip alias types
+        if "alias" in comment.lower(): # Skip deprecated alias types
             continue
 
         tags = parse_docs(comment)
         comment = get_comment_text(comment)
 
         entry = {
-            "const_name": const_name,
+            "id": const_name,
             "comment": comment
         }
         extend_with_doc_tags(entry, tags)
