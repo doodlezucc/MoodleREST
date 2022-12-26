@@ -29,6 +29,8 @@ r_doc = re.compile(r"/\*.*?\*/", flags=re.M|re.S)
 r_doc_tag = re.compile(r"@(since|deprecated|todo)\s+(.*?)$", flags=re.M|re.S)
 r_semver = re.compile(r"\d+(?:\.\d+)+")
 
+r_param_def = re.compile(r" \* (PARAM_\S+)\W+(.*?)\s*?\*\/.*?define\(.*?,.*?'(.*?)'", flags=re.M|re.S)
+
 def outer_scope(code: str, open = "{", close = "}"):
     # Matches comments first, brackets second
     matches = re.finditer(fr"{p_cmnt}|(\{open}|\{close})", code, flags=re.M|re.S)
@@ -212,7 +214,7 @@ def read_array(s: str):
     
     return PhpArray(defs)
 
-class MethodDocs():
+class DocTags():
     def __init__(self, since: str = None, deprecated: str = None, todo: str = None):
         self.since = since
         self.deprecated = deprecated
@@ -229,12 +231,12 @@ def parse_docs(docs: str):
         comment = match[2]
         tags[tag] = comment
     
-    return MethodDocs(tags.get("since"), tags.get("deprecated"), tags.get("todo"))
+    return DocTags(tags.get("since"), tags.get("deprecated"), tags.get("todo"))
 
 def find_docs(classdef: str, method: str):
     fn = re.search(f"function {method}" + r"\(.*?{", classdef)
     if not fn:
-        return MethodDocs()
+        return DocTags()
     
     try:
         previous_bracket = classdef.rindex("}", 0, fn.start())
@@ -242,7 +244,7 @@ def find_docs(classdef: str, method: str):
         *_, docs = matches
         return parse_docs(docs[0])
     except ValueError:
-        return MethodDocs()
+        return DocTags()
 
 def extract_classes(file: Path, lookup: dict):
     with file.open("r", -1, "utf-8", errors="replace") as f:
@@ -323,7 +325,15 @@ def extract_all(root: Path, limit = -1):
     
     return wsfns
 
-def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, MethodDocs]):
+def extend_with_doc_tags(obj: Dict, tags: DocTags):
+    if tags.since:
+        obj["since"] = r_semver.search(tags.since)[0]
+    if tags.deprecated:
+        obj["deprecated"] = r_semver.search(tags.deprecated)[0]
+    if tags.todo:
+        obj["todo"] = tags.todo
+
+def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, DocTags]):
     with open(wsapi_file, "r") as f:
         wsapi = json.load(f)
         
@@ -333,13 +343,7 @@ def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, MethodDocs]):
                 try:
                     docs = tags[funcname]
                     fn = component[funcname]
-
-                    if docs.since:
-                        fn["since"] = r_semver.search(docs.since)[0]
-                    if docs.deprecated:
-                        fn["deprecated"] = r_semver.search(docs.deprecated)[0]
-                    if docs.todo:
-                        fn["todo"] = docs.todo
+                    extend_with_doc_tags(fn, docs)
 
                 except KeyError:
                     pass
@@ -347,19 +351,90 @@ def extend_wsapi(wsapi_file: str, output: str, tags: Dict[str, MethodDocs]):
         with open(output, "w") as f:
             json.dump(wsapi, f, separators=(',', ':'))
 
-def main():
+def punctuate(s: str):
+    """Ensures a uppercase first letter and a period, exclamation point, question mark or bracket at the end of s."""
+    s = s[0].upper() + s[1:]
+    if s[-1] in ".!?()[]{}":
+        return s
+    
+    return s + "."
+
+def get_comment_text(comment: str):
+    # Remove doc tags and leading comment asterisks
+    lines = comment.splitlines()
+    out_lines = [""]
+
+    for line in lines:
+        trim = line.replace(" *", "").strip()
+        if trim.startswith("@"): # skip doc tags
+            continue
+
+        if len(trim):
+            if trim.startswith("NOTE"):
+                out_lines.append("")
+
+            elif len(out_lines[-1]):
+                out_lines[-1] += " "
+            
+            out_lines[-1] += trim
+        else:
+            out_lines.append("")
+        
+    return "\n".join(punctuate(line) for line in out_lines)
+
+def read_param_type_defs(root: Path):
+    lib_path = "lib/moodlelib.php"
+    lib_file = root.joinpath(lib_path)
+    contents = lib_file.read_text(errors="ignore")
+
+    matches = r_param_def.finditer(contents)
+
+    params = dict()
+
+    for match in matches:
+        const_name = match[1]
+        comment = match[2]
+        key = match[3]
+
+        tags = parse_docs(comment)
+        comment = get_comment_text(comment)
+
+        entry = {
+            "const_name": const_name,
+            "comment": comment
+        }
+        extend_with_doc_tags(entry, tags)
+
+        params[key] = entry
+    
+    return params
+
+def extract_param_type_defs(moodle_root: Path, output):
+    param_defs = read_param_type_defs(moodle_root)
+    
+    with open(output, "w") as f:
+        json.dump(param_defs, f, separators=(',', ':'))
+
+def main(extract_param_types = True, extend_api = True):
     os.chdir(os.path.dirname(__file__))
 
     root = Path("../../../../Moodle-400/server/moodle")
     wsapi_file = "wsapi.json"
     output = "../src/api/moodle-4.0.0.json"
+    output_params = "../src/api/param_definitions.json"
 
-    print("Extracting tags...")
-    wsfns = extract_all(root)
+    if extract_param_types:
+        print("Extracting available parameter types")
+        extract_param_type_defs(root, output_params)
 
-    print(f"Documentation tags extracted successfully!\n")
-    print("Applying tags to generated API Reference...")
-    extend_wsapi(wsapi_file, output, wsfns)
+    if extend_api:
+        print("Extracting tags...")
+        wsfns = extract_all(root)
+
+        print(f"Documentation tags extracted successfully!\n")
+        print("Applying tags to generated API Reference...")
+        extend_wsapi(wsapi_file, output, wsfns)
+    
     print("Done!")
 
-main()
+main(extend_api=False)
