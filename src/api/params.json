@@ -1,0 +1,189 @@
+{
+    "alpha": {
+        "id": "PARAM_ALPHA",
+        "comment": "A string consisting ONLY of English letters.",
+        "regex": "[a-zA-Z]",
+        "response": "A string."
+    },
+    "alphaext": {
+        "id": "PARAM_ALPHAEXT",
+        "comment": "A string consisting ONLY of English letters, hyphens and underscores.",
+        "regex": "[a-zA-Z_-]",
+        "response": "A string."
+    },
+    "alphanum": {
+        "id": "PARAM_ALPHANUM",
+        "comment": "A string consisting ONLY of digits and English letters.",
+        "regex": "[a-zA-Z0-9]",
+        "response": "A string."
+    },
+    "alphanumext": {
+        "id": "PARAM_ALPHANUMEXT",
+        "comment": "A string consisting ONLY of digits, English letters, hyphens and underscores.",
+        "regex": "[a-zA-Z0-9_-]",
+        "response": "A string."
+    },
+    "auth": {
+        "id": "PARAM_AUTH",
+        "comment": "The name of a valid \"auth\" plugin.",
+        "regex": "[a-z][a-z0-9_-]*"
+    },
+    "base64": {
+        "id": "PARAM_BASE64",
+        "comment": "Base 64 encoded data.",
+        "regex": "(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?"
+    },
+    "bool": {
+        "id": "PARAM_BOOL",
+        "comment": "A boolean value. True unless empty or one of [false, off, no].",
+        "response": "Either 0 (false) or 1 (true)."
+    },
+    "capability": {
+        "id": "PARAM_CAPABILITY",
+        "comment": "A valid capability name, like 'moodle/role:manage'.",
+        "regex": "([a-zA-Z0-9]+)/([^/]+?):(.+?)"
+    },
+    "cleanhtml": {
+        "id": "PARAM_CLEANHTML",
+        "comment": "HTML code."
+    },
+    "email": {
+        "id": "PARAM_EMAIL",
+        "comment": "An email address.",
+        "regex": "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+    },
+    "file": {
+        "id": "PARAM_FILE",
+        "comment": "A safe file name (dangerous chars are stripped to protect against XSS, SQL injections and directory traversals).",
+        "response": "A file name."
+    },
+    "float": {
+        "id": "PARAM_FLOAT",
+        "comment": "A real/floating point number using a dot as the separator (not localised).",
+        "regex": "[+-]?\\d+(\\.\\d+)?",
+        "response": "A real (\"floating point\") number."
+    },
+    "localisedfloat": {
+        "id": "PARAM_LOCALISEDFLOAT",
+        "comment": "A localised real/floating point number. This is preferred for numbers typed in by the user.",
+        "regex": "[+-]?[\\d.,]+"
+    },
+    "host": {
+        "id": "PARAM_HOST",
+        "comment": "A fully qualified domain name (FQDN) or an IPv4 dotted quad (IP address).",
+        "regex": "((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]))"
+    },
+    "int": {
+        "id": "PARAM_INT",
+        "comment": "An integer.",
+        "regex": "[+-]?\\d+"
+    },
+    "lang": {
+        "id": "PARAM_LANG",
+        "comment": "A valid installed language in the current site (e.g. \"en_us\").",
+        "regex": "[a-z]{2,}(_[a-z0-9]{2,})*"
+    },
+    "localurl": {
+        "id": "PARAM_LOCALURL",
+        "comment": "A properly formatted URL that refers to the local server itself."
+    },
+    "notags": {
+        "id": "PARAM_NOTAGS",
+        "comment": "A string (HTML tags are stripped).",
+        "response": "A string."
+    },
+    "path": {
+        "id": "PARAM_PATH",
+        "comment": "A relative path (dangerous chars are stripped to protect against XSS, SQL injections and directory traversals).",
+        "regex": "^([^/\\]+?[/\\])*?[^/\\]+?/?$"
+    },
+    "pem": {
+        "id": "PARAM_PEM",
+        "comment": "Privacy Enhanced Mail format.",
+        "regex": "-----BEGIN CERTIFICATE-----([\\s\\w\/\\+=]+)-----END CERTIFICATE-----"
+    },
+    "permission": {
+        "id": "PARAM_PERMISSION",
+        "comment": "A permission. One of CAP_INHERIT, CAP_ALLOW, CAP_PREVENT or CAP_PROHIBIT.",
+        "regex": "CAP_(INHERIT|ALLOW|PREVENT|PROHIBIT)"
+    },
+    "raw": {
+        "id": "PARAM_RAW",
+        "comment": "A string."
+    },
+    "raw_trimmed": {
+        "id": "PARAM_RAW_TRIMMED",
+        "comment": "A string (leading and trailing whitespace are stripped).",
+        "response": "A string."
+    },
+    "safedir": {
+        "id": "PARAM_SAFEDIR",
+        "comment": "A string consisting ONLY of digits, English letters, hyphens and underscores.",
+        "regex": "[a-zA-Z0-9_-]+",
+        "response": "A string."
+    },
+    "safepath": {
+        "id": "PARAM_SAFEPATH",
+        "comment": "A string consisting ONLY of digits, English letters, slashes, hyphens and underscores.",
+        "regex": "[a-zA-Z0-9\/_-]+",
+        "response": "A string."
+    },
+    "sequence": {
+        "id": "PARAM_SEQUENCE",
+        "comment": "A sequence of numbers, such as \"8\" or \"1,5,6,4,6,8,9\". Numbers and commas only.",
+        "regex": "[0-9,]+"
+    },
+    "tag": {
+        "id": "PARAM_TAG",
+        "comment": "The name of a tag (<> symbols are stripped)."
+    },
+    "taglist": {
+        "id": "PARAM_TAGLIST",
+        "comment": "A list of tags separated by commas (e.g. \"interests, blogs\", <> symbols are stripped)."
+    },
+    "text": {
+        "id": "PARAM_TEXT",
+        "comment": "A string (may contain multi-language content tags)."
+    },
+    "theme": {
+        "id": "PARAM_THEME",
+        "comment": "The name of a valid theme."
+    },
+    "url": {
+        "id": "PARAM_URL",
+        "comment": "A properly formatted URL. Requires a domain part (e.g. \"http://localhost.localdomain/\").",
+        "response": "A properly formatted URL."
+    },
+    "username": {
+        "id": "PARAM_USERNAME",
+        "comment": "A username.",
+        "regex": "[^-\\.@_a-z0-9]"
+    },
+    "stringid": {
+        "id": "PARAM_STRINGID",
+        "comment": "A valid string identifier."
+    },
+    "clean": {
+        "id": "PARAM_CLEAN",
+        "comment": "A string.",
+        "deprecated": "2.0"
+    },
+    "timezone": {
+        "id": "PARAM_TIMEZONE",
+        "comment": "A number between -13 and +13 or a string such as \"America/North_Dakota/New_Salem\" or \"America/Port-au-Prince\""
+    },
+    "component": {
+        "id": "PARAM_COMPONENT",
+        "comment": "The name of a component, such as \"mod_forum\" or \"core_rating\" (or a short legacy subsystem name, e.g. \"forum\" or \"rating\")."
+    },
+    "area": {
+        "id": "PARAM_AREA",
+        "comment": "The name of an area used when addressing files, comments, ratings, etc.",
+        "regex": "[a-z][a-z0-9_]*"
+    },
+    "plugin": {
+        "id": "PARAM_PLUGIN",
+        "comment": "The name of a plugin, such as \"forum\" or \"glossary\".",
+        "regex": "[a-z][a-z0-9_]*"
+    }
+}

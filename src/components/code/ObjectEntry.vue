@@ -1,8 +1,8 @@
 <script setup>
 import Field from "./Field.vue";
-import simpleType from '@/js/datatype';
+import { simpleType } from '@/js/datatype';
 
-const { name, field } = defineProps({
+const { name, field, isResponse } = defineProps({
   name: {
     type: String,
     required: true
@@ -10,6 +10,10 @@ const { name, field } = defineProps({
   field: {
     type: Object,
     required: true
+  },
+  isResponse: {
+    type: Boolean,
+    default: false,
   }
 });
 
@@ -31,6 +35,6 @@ if (def != undefined) {
       <span :data-type="simple" style="font-weight: normal;">{{ def }}</span>)
     </span>
     -
-    <Field :field=field />
+    <Field :field=field :is-response="isResponse" />
   </li>
 </template>

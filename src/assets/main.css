@@ -303,3 +303,33 @@ nav > span:not(:first-child) > * {
   gap: 4px;
   vertical-align: top;
 }
+
+.with-tooltip {
+  position: relative;
+  display: contents;
+}
+.with-tooltip:hover > .tooltip {
+  opacity: 1;
+  transition: 0s;
+}
+.tooltip {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  z-index: 1;
+
+  display: flex;
+  width: max-content;
+  max-width: 50vw;
+  white-space: pre-line;
+  padding: 0.2rem 0.4rem;
+  
+  background-color: var(--color-code-background);
+  border: 1px solid var(--color);
+  color: var(--color-comment-hover);
+  box-shadow: 0.2rem 0.2rem 0.3rem #0005;
+  font-style: normal;
+  opacity: 0;
+  transition: 0.1s;
+  pointer-events: none;
+}
