@@ -16,12 +16,17 @@
   --color-code-key: var(--vt-c-text-light-2);
 }
 
-[data-type] { font-weight: var(--code-type-weight); }
-[data-type="number"] { color: var(--syntax-blue); }
-[data-type="bool"]   { color: var(--syntax-green); }
-[data-type="string"] { color: var(--syntax-orange); }
-[data-type="object"] { color: var(--syntax-red); }
-[data-type="array"] { color: var(--syntax-pink); }
+[data-type] {
+  font-weight: var(--code-type-weight);
+  color: var(--color);
+  white-space: nowrap;
+}
+[data-type="number"] { --color: var(--syntax-blue); }
+[data-type="bool"]   { --color: var(--syntax-green); }
+[data-type="string"] { --color: var(--syntax-orange); }
+[data-type="object"] { --color: var(--syntax-red); }
+[data-type="array"] { --color: var(--syntax-pink); }
+[data-type="timezone"] { --color: var(--syntax-pink); }
 
 code {
   display: block;

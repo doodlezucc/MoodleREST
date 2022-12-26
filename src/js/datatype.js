@@ -1,4 +1,6 @@
-export default function simpleType(type) {
+import paramTypes from "../api/params.json";
+
+export function simpleType(type) {
   switch (type) {
     case "int":
     case "float":
@@ -7,7 +9,13 @@ export default function simpleType(type) {
     case "object":
     case "array":
       return type;
+    case "timezone":
+      return "timezone";
     default:
       return "string";
   }
+}
+
+export function typeDescription(type) {
+  return paramTypes[type];
 }
