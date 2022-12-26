@@ -416,7 +416,7 @@ def extract_param_type_defs(moodle_root: Path, output):
     param_defs = read_param_type_defs(moodle_root)
     
     with open(output, "w") as f:
-        json.dump(param_defs, f, separators=(',', ':'))
+        json.dump(param_defs, f, indent="\t")
 
 def main(extract_param_types = True, extend_api = True):
     os.chdir(os.path.dirname(__file__))
@@ -424,7 +424,7 @@ def main(extract_param_types = True, extend_api = True):
     root = Path("../../../../Moodle-400/server/moodle")
     wsapi_file = "wsapi.json"
     output = "../src/api/moodle-4.0.0.json"
-    output_params = "../src/api/param_definitions.json"
+    output_params = "../src/api/params.g.json"
 
     if extract_param_types:
         print("Extracting available parameter types")

@@ -1,0 +1,155 @@
+{
+	"alpha": {
+		"id": "PARAM_ALPHA",
+		"comment": "Contains only English ascii letters [a-zA-Z]."
+	},
+	"alphaext": {
+		"id": "PARAM_ALPHAEXT",
+		"comment": "The same contents as PARAM_ALPHA (English ascii letters [a-zA-Z]) plus the chars in quotes: \"_-\" allowed.\nNOTE: originally this allowed \"/\" too, please use PARAM_SAFEPATH if \"/\" needed."
+	},
+	"alphanum": {
+		"id": "PARAM_ALPHANUM",
+		"comment": "Expected numbers 0-9 and English ascii letters [a-zA-Z] only."
+	},
+	"alphanumext": {
+		"id": "PARAM_ALPHANUMEXT",
+		"comment": "Expected numbers 0-9, letters (English ascii letters [a-zA-Z]) and _- only."
+	},
+	"auth": {
+		"id": "PARAM_AUTH",
+		"comment": "Actually checks to make sure the string is a valid auth plugin."
+	},
+	"base64": {
+		"id": "PARAM_BASE64",
+		"comment": "Base 64 encoded format."
+	},
+	"bool": {
+		"id": "PARAM_BOOL",
+		"comment": "Converts input into 0 or 1, use for switches in forms and urls."
+	},
+	"capability": {
+		"id": "PARAM_CAPABILITY",
+		"comment": "A capability name, like 'moodle/role:manage'. Actually checked against the list of capabilities in the database."
+	},
+	"cleanhtml": {
+		"id": "PARAM_CLEANHTML",
+		"comment": "Cleans submitted HTML code. Note that you almost never want to use this. The normal mode of operation is to use PARAM_RAW when receiving the input (required/optional_param or formslib) and then sanitise the HTML using format_text on output. This is for the rare cases when you want to sanitise the HTML on input. This cleaning may also fix xhtml strictness."
+	},
+	"email": {
+		"id": "PARAM_EMAIL",
+		"comment": "An email address following the RFC."
+	},
+	"file": {
+		"id": "PARAM_FILE",
+		"comment": "Safe file name, all dangerous chars are stripped, protects against XSS, SQL injections and directory traversals."
+	},
+	"float": {
+		"id": "PARAM_FLOAT",
+		"comment": "A real/floating point number.\nNote that you should not use PARAM_FLOAT for numbers typed in by the user. It does not work for languages that use , as a decimal separator. Use PARAM_LOCALISEDFLOAT instead."
+	},
+	"localisedfloat": {
+		"id": "PARAM_LOCALISEDFLOAT",
+		"comment": "A localised real/floating point number. This is preferred over PARAM_FLOAT for numbers typed in by the user. Cleans localised numbers to computer readable numbers; false for invalid numbers."
+	},
+	"host": {
+		"id": "PARAM_HOST",
+		"comment": "Expected fully qualified domain name (FQDN) or an IPv4 dotted quad (IP address)"
+	},
+	"int": {
+		"id": "PARAM_INT",
+		"comment": "Integers only, use when expecting only numbers."
+	},
+	"lang": {
+		"id": "PARAM_LANG",
+		"comment": "Checks to see if the string is a valid installed language in the current site."
+	},
+	"localurl": {
+		"id": "PARAM_LOCALURL",
+		"comment": "Expected properly formatted URL as well as one that refers to the local server itself. (NOT orthogonal to the others! Implies PARAM_URL!)"
+	},
+	"notags": {
+		"id": "PARAM_NOTAGS",
+		"comment": "All html tags are stripped from the text. Do not abuse this type."
+	},
+	"path": {
+		"id": "PARAM_PATH",
+		"comment": "Safe relative path name, all dangerous chars are stripped, protects against XSS, SQL injections and directory traversals note: the leading slash is not removed, window drive letter is not allowed."
+	},
+	"pem": {
+		"id": "PARAM_PEM",
+		"comment": "Privacy Enhanced Mail format."
+	},
+	"permission": {
+		"id": "PARAM_PERMISSION",
+		"comment": "A permission, one of CAP_INHERIT, CAP_ALLOW, CAP_PREVENT or CAP_PROHIBIT."
+	},
+	"raw": {
+		"id": "PARAM_RAW",
+		"comment": "Specifies a parameter that is not cleaned/processed in any way except the discarding of the invalid utf-8 characters."
+	},
+	"raw_trimmed": {
+		"id": "PARAM_RAW_TRIMMED",
+		"comment": "Like PARAM_RAW but leading and trailing whitespace is stripped."
+	},
+	"safedir": {
+		"id": "PARAM_SAFEDIR",
+		"comment": "Safe directory name, suitable for include() and require()"
+	},
+	"safepath": {
+		"id": "PARAM_SAFEPATH",
+		"comment": "Several PARAM_SAFEDIR joined by \"/\", suitable for include() and require(), plugin paths and other references to Moodle code files.\nThis is NOT intended to be used for absolute paths or any user uploaded files."
+	},
+	"sequence": {
+		"id": "PARAM_SEQUENCE",
+		"comment": "Expects a sequence of numbers like 8 to 1,5,6,4,6,8,9.  Numbers and comma only."
+	},
+	"tag": {
+		"id": "PARAM_TAG",
+		"comment": "One tag (interests, blogs, etc.) - mostly international characters and space, <> not supported."
+	},
+	"taglist": {
+		"id": "PARAM_TAGLIST",
+		"comment": "List of tags separated by commas (interests, blogs, etc.)"
+	},
+	"text": {
+		"id": "PARAM_TEXT",
+		"comment": "General plain text compatible with multilang filter, no other html tags. Please note '<', or '>' are allowed here."
+	},
+	"theme": {
+		"id": "PARAM_THEME",
+		"comment": "Checks to see if the string is a valid theme name in the current site."
+	},
+	"url": {
+		"id": "PARAM_URL",
+		"comment": "Expected properly formatted URL. Please note that domain part is required, http://localhost/ is not accepted but http://localhost.localdomain/ is ok."
+	},
+	"username": {
+		"id": "PARAM_USERNAME",
+		"comment": "Clean username to only contains allowed characters. This is to be used ONLY when manually creating user accounts, do NOT use when syncing with external systems!!"
+	},
+	"stringid": {
+		"id": "PARAM_STRINGID",
+		"comment": "Used to check if the given string is valid string identifier for get_string()"
+	},
+	"clean": {
+		"id": "PARAM_CLEAN",
+		"comment": "Obsoleted, please use a more specific type of parameter. It was one of the first types, that is why it is abused so much ;-)",
+		"deprecated": "2.0"
+	},
+	"timezone": {
+		"id": "PARAM_TIMEZONE",
+		"comment": "Expected timezone. Timezone can be int +-(0-13) or float +-(0.5-12.5) or string separated by '/' and can have '-' &/ '_' (eg. America/North_Dakota/New_Salem America/Port-au-Prince)"
+	},
+	"component": {
+		"id": "PARAM_COMPONENT",
+		"comment": "Is used for full component names (aka frankenstyle) such as 'mod_forum', 'core_rating', 'auth_ldap'. Short legacy subsystem names and module names are accepted too ex: 'forum', 'rating', 'user'. Only lowercase ascii letters, numbers and underscores are allowed, it has to start with a letter.\nNOTE: numbers and underscores are strongly discouraged in plugin names!"
+	},
+	"area": {
+		"id": "PARAM_AREA",
+		"comment": "Is a name of area used when addressing files, comments, ratings, etc. It is usually used together with context id and component. Only lowercase ascii letters, numbers and underscores are allowed, it has to start with a letter."
+	},
+	"plugin": {
+		"id": "PARAM_PLUGIN",
+		"comment": "Is used for plugin names such as 'forum', 'glossary', 'ldap', 'paypal', 'completionstatus'. Only lowercase ascii letters, numbers and underscores are allowed, it has to start with a letter.\nNOTE: numbers and underscores are strongly discouraged in plugin names! Underscores are forbidden in module names."
+	}
+}
