@@ -29,6 +29,7 @@ const { field, isArray, isResponse } = defineProps({
   </span>
   <span v-else-if="field.type === 'array'">
     <VarType :field="field" :is-response="isResponse" /> [
+    <Comment :content=field.description />
     <ul>
       <li>
         <Field :field=field.items :isArray="true" :is-response="isResponse" />
