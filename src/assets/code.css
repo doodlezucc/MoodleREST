@@ -20,6 +20,7 @@
   font-weight: var(--code-type-weight);
   color: var(--color);
   white-space: nowrap;
+  user-select: none;
 }
 [data-type="number"] { --color: var(--syntax-blue); }
 [data-type="bool"]   { --color: var(--syntax-green); }
@@ -58,6 +59,14 @@ code .key {
 .comment {
   color: var(--color-comment);
   background: none;
+  user-select: none;
+}
+
+.separator {
+  padding-left: 0.3em;
+}
+.separator-end {
+  padding-right: 0.6em;
 }
 
 code ul {

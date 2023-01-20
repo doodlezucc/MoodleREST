@@ -31,10 +31,11 @@ if (def != undefined) {
 <template>
   <li>
     <span :class="{ key: true, required: field.required }">{{ name }}</span>
-    <span v-if="field.default != undefined" class="comment"> (defaults to
+    <span v-if="field.default != undefined" class="comment separator">(defaults to
       <span :data-type="simple" style="font-weight: normal;">{{ def }}</span>)
+      <span class="comment separator-end">:</span>
     </span>
-    -
+    <span v-else class="comment separator">: </span>
     <Field :field=field :is-response="isResponse" />
   </li>
 </template>

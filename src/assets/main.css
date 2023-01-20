@@ -332,4 +332,5 @@ nav > span:not(:first-child) > * {
   opacity: 0;
   transition: 0.1s;
   pointer-events: none;
+  user-select: none;
 }

@@ -15,6 +15,11 @@ let version = 'any';
 if (body.since) {
   version = '≥' + body.since;
 }
+
+let capabilities = 'none';
+if (body.capabilities.length) {
+  capabilities = body.capabilities.join(" | ");
+}
 </script>
 
 <template>
@@ -24,6 +29,7 @@ if (body.since) {
   </div>
   <p>{{ body.description }}</p>
 
+  <div v-if="body.capabilities.length"><b>Requires</b>: {{ capabilities }}</div>
   <div><b>Version</b>: {{ version }}</div>
   <!-- <div v-if="body.services.length"><b>Services</b>: {{ body.services.join(', ') }}</div> -->
   <!-- <div v-else><b>Services</b>: none</div> -->
